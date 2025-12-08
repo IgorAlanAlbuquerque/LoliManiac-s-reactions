@@ -7,7 +7,7 @@ cmake_policy(SET CMP0002 NEW)
 project(LoliManiacReactions VERSION 0.0.1 LANGUAGES CXX)
 
 if(DEFINED ENV{SKYRIM_MODS_FOLDER} AND IS_DIRECTORY "$ENV{SKYRIM_MODS_FOLDER}")
-    set(OUTPUT_FOLDER "$ENV{SKYRIM_MODS_FOLDER}/${PROJECT_NAME}")
+    set(OUTPUT_FOLDER "$ENV{SKYRIM_MODS_FOLDER}/LoliManiacSingleReactions")
 endif()
 
 set(BUILD_TESTS OFF CACHE BOOL "Build unit tests for CommonLibVR." FORCE)
@@ -22,7 +22,11 @@ get_target_property(COMMONLIB_SRC_DIR CommonLibSSE SOURCE_DIR)
 
 include(${COMMONLIB_SRC_DIR}/cmake/CommonLibSSE.cmake)
 
-add_commonlibsse_plugin(LoliManiacSingleReactions SOURCES src/plugin.cpp)
+add_commonlibsse_plugin(LoliManiacSingleReactions
+    SOURCES
+    src/plugin.cpp
+    src/Elements.cpp
+    src/single/FreezeFrost.cpp)
 
 target_include_directories(LoliManiacSingleReactions
   PRIVATE
@@ -32,7 +36,11 @@ target_include_directories(LoliManiacSingleReactions
 )
 
 target_compile_features(LoliManiacSingleReactions PRIVATE cxx_std_23) 
-target_precompile_headers(LoliManiacSingleReactions PRIVATE src/PCH.h) 
+target_precompile_headers(LoliManiacSingleReactions
+    PRIVATE
+    src/PCH.h
+    src/Elements.h
+    src/single/FreezeFrost.h) 
 
 if(DEFINED OUTPUT_FOLDER)
     set(DLL_FOLDER "${OUTPUT_FOLDER}/SKSE/Plugins")
